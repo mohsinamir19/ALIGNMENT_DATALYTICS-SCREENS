@@ -11,7 +11,8 @@ export default function App() {
   const [hidden, setHidden] = useState<Set<Kind>>(new Set())
 
   const toggle = (k: Kind) => setHidden((h) => { const n = new Set(h); n.has(k) ? n.delete(k) : n.add(k); return n })
-  const filter = () => setHidden((h) => (h.size === 0 ? new Set<Kind>(['G']) : h.size === 1 && h.has('G') ? new Set<Kind>(['P']) : new Set<Kind>()))
+  const setKinds = (kinds: Kind[], on: boolean) => setHidden((h) => { const n = new Set(h); kinds.forEach((k) => (on ? n.delete(k) : n.add(k))); return n })
+  const drill = (p: Period, o: number) => { setPeriod(p); setOffset(o) }
 
   return (
     <ScaleFrame>
@@ -19,8 +20,8 @@ export default function App() {
         onPeriod={(p) => { setPeriod(p); setOffset(0) }}
         onStep={(d) => setOffset((o) => Math.max(-12, Math.min(12, o + d)))}
         onToggle={toggle} />
-      <PoaGraph period={period} offset={offset} />
-      <ProgressGraph period={period} offset={offset} hidden={hidden} onFilter={filter} />
+      <PoaGraph period={period} offset={offset} onDrill={drill} />
+      <ProgressGraph period={period} offset={offset} hidden={hidden} onSet={setKinds} onDrill={drill} />
     </ScaleFrame>
   )
 }

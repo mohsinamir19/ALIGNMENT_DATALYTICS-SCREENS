@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type KeyboardEvent } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { line, curveMonotoneX } from 'd3-shape'
 import Ball, { BallDefs } from './Ball'
-import Tooltip, { tipHeight, type TipContent } from './Tooltip'
+import Tooltip, { tipSize } from './Tooltip'
+import { poaTip } from '../data/tooltips'
 import { asset, INK, LEVEL_GRAD, type Period } from '../lib/theme'
-import { poaFor, POA_PLOT, poaY, type PoaPoint } from '../data/model'
+import { poaFor, POA_PLOT, poaY } from '../data/model'
 
 const img = (n: string, x: number, y: number, w: number, h: number) => <image href={asset(n)} x={x} y={y} width={w} height={h} preserveAspectRatio="none" />
 
@@ -45,22 +46,20 @@ function Axis({ period }: { period: Period }) {
   )
 }
 
-function tipFor(p: PoaPoint, prev: PoaPoint | undefined, period: Period, avg: number): TipContent {
-  const d = prev ? p.level - prev.level : p.level - Math.round(avg)
-  const zone = p.level >= 15 ? 'In alignment' : p.level >= 12 ? 'Getting there' : 'Not in alignment'
-  return {
-    title: p.caption.toUpperCase(),
-    lines: [`Point of attraction ${p.level} / 22`, zone],
-    delta: `${d >= 0 ? '▲ +' : '▼ '}${d} levels vs ${prev ? 'previous point' : `last ${period}`}`,
-    deltaUp: d >= 0,
-  }
-}
-
-export default function PoaGraph({ period, offset }: { period: Period; offset: number }) {
+export default function PoaGraph({ period, offset, onDrill }: { period: Period; offset: number; onDrill: (p: Period, o: number) => void }) {
   const reduce = useReducedMotion()
   const data = useMemo(() => poaFor(period, offset), [period, offset])
   const [sel, setSel] = useState<number | null>(null)
   const [hover, setHover] = useState<number | null>(null)
+  const prevData = useMemo(() => poaFor(period, offset - 1), [period, offset])
+
+  useEffect(() => { setSel(null); setHover(null) }, [period, offset])
+  useEffect(() => {
+    const esc = (e: globalThis.KeyboardEvent) => { if (e.key === 'Escape') setSel(null) }
+    const out = (e: PointerEvent) => { if (!(e.target as Element).closest?.('[data-hit],[data-tip]')) setSel(null) }
+    window.addEventListener('keydown', esc); window.addEventListener('pointerdown', out)
+    return () => { window.removeEventListener('keydown', esc); window.removeEventListener('pointerdown', out) }
+  }, [])
   const dur = reduce ? 0 : 1.4
 
   const pathD = useMemo(() => {
@@ -70,10 +69,11 @@ export default function PoaGraph({ period, offset }: { period: Period; offset: n
   }, [data, period])
 
   const active = hover ?? sel
-  const p = active !== null ? data.points[active] : null
-  const tipH = p ? tipHeight(2, true) : 0
-  const tipX = p ? Math.min(Math.max(p.x - 102, 30), 428 - 204 - 18) : 0
-  const tipY = p ? (p.y - p.size / 2 - tipH - 12 < 247 ? p.y + p.size / 2 + 12 : p.y - p.size / 2 - tipH - 12) : 0
+  const p = sel !== null ? data.points[sel] : null
+  const spec = sel !== null ? poaTip(period, offset, data, prevData, sel) : null
+  const size = spec ? tipSize(spec) : null
+  const tipX = p && size ? Math.min(Math.max(p.x - size.w / 2 + 6, 28), 428 - size.w - 16) : 0
+  const tipY = p && size ? (p.y - p.size / 2 - size.h - 12 < 247 ? p.y + p.size / 2 + 12 : p.y - p.size / 2 - size.h - 12) : 0
   const maskId = `poa-mask-${period}`
 
   return (
@@ -106,8 +106,8 @@ export default function PoaGraph({ period, offset }: { period: Period; offset: n
             return (
               <motion.g key={i} initial={{ opacity: 0, scale: 0.2 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay, duration: reduce ? 0 : 0.35, type: 'spring', stiffness: 260, damping: 18 }}
                 style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-                <g style={{ pointerEvents: 'all', cursor: 'pointer' }} onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(i)} onPointerLeave={() => setHover(null)}
-                  onClick={(e) => { e.stopPropagation(); setSel(sel === i && hover === null ? null : i) }}>
+                <g data-hit role="button" tabIndex={0} aria-label={`Point of attraction ${pt.caption}: ${pt.level}`} className="hit" style={{ pointerEvents: 'all', cursor: 'pointer', outline: 'none' }} onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(i)} onPointerLeave={() => setHover(null)}
+                  onClick={(e) => { e.stopPropagation(); setSel(i) }} onKeyDown={(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSel(i) } }}>
                   <circle cx={pt.x} cy={pt.y} r={Math.max(pt.size / 2 + 6, 22)} fill="transparent" />
                   <Ball id="poa" cx={pt.x} cy={pt.y} d={isActive ? pt.size * 1.18 : pt.size} level={pt.level} label={pt.label ?? (pt.size < 12 ? pt.level : undefined)} cyan={pt.cyan} active={isActive} />
                 </g>
@@ -115,7 +115,7 @@ export default function PoaGraph({ period, offset }: { period: Period; offset: n
             )
           })}
           <AnimatePresence>
-            {p && <Tooltip key={`t${active}`} id="poatip" x={tipX} y={tipY} content={tipFor(p, active! > 0 ? data.points[active! - 1] : undefined, period, data.avg)} />}
+            {p && spec && <Tooltip key={`t${sel}-${period}-${offset}`} id="poatip" x={tipX} y={tipY} spec={spec} onDrill={spec.drill ? () => onDrill(spec.drill!.period, spec.drill!.offset) : undefined} />}
           </AnimatePresence>
         </motion.g>
       </AnimatePresence>
