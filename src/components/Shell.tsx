@@ -64,8 +64,8 @@ function Tabs({ period, onChange }: { period: Period; onChange: (p: Period) => v
 function DateStepper({ period, offset, onStep }: { period: Period; offset: number; onStep: (d: number) => void }) {
   const [x, y, w, h] = DATE_BOX[period]
   const arrow = (dir: 'prev' | 'next', left: number, chevX: number) => (
-    <button aria-label={dir === 'prev' ? 'Previous' : 'Next'} onClick={() => onStep(dir === 'prev' ? -1 : 1)} disabled={dir === 'next' && offset >= 0}
-      style={{ position: 'absolute', left: left - 8, top: 177 - 8, width: 44, height: 44, opacity: dir === 'next' && offset >= 0 ? 0.45 : 1 }}>
+    <button aria-label={dir === 'prev' ? 'Previous' : 'Next'} onClick={() => onStep(dir === 'prev' ? -1 : 1)}
+      style={{ position: 'absolute', left: left - 8, top: 177 - 8, width: 44, height: 44, }}>
       <img src={asset(`date-arrow-${dir}-base.svg`)} width={34} height={34} alt="" draggable={false} style={{ position: 'absolute', left: 8 - 2, top: 8 - 1 }} />
       <img src={asset(`date-arrow-${dir}-chevron.svg`)} width={6.2} height={14} alt="" draggable={false} style={{ position: 'absolute', left: chevX - left + 8, top: 7 + 8 }} />
     </button>

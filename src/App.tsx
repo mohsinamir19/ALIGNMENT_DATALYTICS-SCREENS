@@ -17,7 +17,7 @@ export default function App() {
     <ScaleFrame>
       <Shell period={period} offset={offset} hidden={hidden}
         onPeriod={(p) => { setPeriod(p); setOffset(0) }}
-        onStep={(d) => setOffset((o) => Math.min(0, o + d))}
+        onStep={(d) => setOffset((o) => Math.max(-12, Math.min(12, o + d)))}
         onToggle={toggle} />
       <PoaGraph period={period} offset={offset} />
       <ProgressGraph period={period} offset={offset} hidden={hidden} onFilter={filter} />
