@@ -24,8 +24,8 @@ const LABELS: [string, number, number, number, number][] = [
 const ZOOM_POS: Record<Period, [number, number, number, number]> = { day: [14, 1700, 361, 1699], week: [9, 1700, 371, 1700], month: [17, 1701, 379, 1701], year: [9, 1700, 375, 1700] }
 
 function axisFor(period: Period): { base: [number, number]; ticks: [number, string][]; tickH: number } {
-  if (period === 'day') return { base: [41.2, 351], ticks: [54, 100.7, 146.6, 193.9, 238.8, 288.9, 333.9].map((x, i) => [x, ['1:00', '1:10', '1:20', '1:30', '1:40', '1:50', '1:50'][i]] as [number, string]), tickH: 0 }
-  if (period === 'week') return { base: [38.5, 351.5], ticks: [60.8, 105.4, 149.9, 194.5, 239.1, 283.6, 328.2].map((x, i) => [x, ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'][i]] as [number, string]), tickH: 7 }
+  if (period === 'day') return { base: [41.2, 351], ticks: [61.2, 107, 154, 200.8, 246, 295.8, 340.8].map((x, i) => [x, ['1:00', '1:10', '1:20', '1:30', '1:40', '1:50', '1:50'][i]] as [number, string]), tickH: 0 }
+  if (period === 'week') return { base: [38.5, 351.5], ticks: [60.8, 105.4, 149.9, 194.5, 239.1, 283.6, 328.2].map((x, i) => [x, ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i]] as [number, string]), tickH: 7 }
   if (period === 'month') return { base: [46.5, 351.5], ticks: [52, 122.5, 192.9, 263.4, 333.8].map((x, i) => [x, ['1', '8', '15', '22', '29'][i]] as [number, string]), tickH: 7 }
   return { base: [43, 355], ticks: Array.from({ length: 12 }, (_, i) => [56 + 26 * i, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i]] as [number, string]), tickH: 6 }
 }
@@ -69,7 +69,7 @@ export default function ProgressGraph({ period, offset, hidden, onFilter }: Prop
   }, [ab, period, offset, active])
 
   const tH = tipHeight(2, true)
-  const tx = ab ? Math.min(Math.max(fx(ab.x1) - 105, 14), 428 - 204 - 14) : 0
+  const tx = ab ? Math.min(Math.max(fx(ab.x1) - 106.5, 14), 428 - 204 - 14) : 0
   const flip = ab ? ab.yTop + 19.5 + tH > 1655 : false
   const ty = ab ? (flip ? ab.yTop - 10 - tH : ab.yTop + 19.5) : 0
 
@@ -112,11 +112,11 @@ export default function ProgressGraph({ period, offset, hidden, onFilter }: Prop
 
       <g clipPath="url(#pg-clip)">
         {/* axis */}
-        {period === 'day' ? <image href={asset('pg-day-ruler.svg')} x={fx(41.2)} y="1710.6" width={306.41 * zoom} height="9.59" preserveAspectRatio="none" />
-          : <g><line x1={ax.base[0]} x2={ax.base[1]} y1="1709.5" y2="1709.5" stroke="#B8C2E0" />
-            {ax.ticks.map(([x]) => <line key={x} x1={fx(x)} x2={fx(x)} y1="1709.5" y2={1709.5 + ax.tickH} stroke="#8B99C4" />)}</g>}
+        {period === 'day' ? <image href={asset('pg-day-ruler.svg')} x={fx(45.7)} y="1710.6" width={306.41 * zoom} height="9.59" preserveAspectRatio="none" />
+          : <g transform={`translate(0 ${period === 'month' ? 1 : 0})`}><line x1={ax.base[0]} x2={ax.base[1]} y1="1709.8" y2="1709.8" stroke="#B8C2E0" strokeWidth="1.5" />
+            {ax.ticks.map(([x]) => <line key={x} x1={fx(x)} x2={fx(x)} y1="1706.5" y2="1713.3" stroke="#97A5D0" strokeWidth="1.6" />)}</g>}
         {ax.ticks.map(([x, l], i) => (
-          <text key={i} x={fx(x)} y={period === 'day' ? 1731 : period === 'year' ? 1725 : 1728} textAnchor="middle" fontSize="8.5" fontWeight="600" fill={INK} fontFamily="Reem Kufi">{l}</text>
+          <text key={i} x={fx(x)} y={period === 'day' ? 1730 : period === 'year' ? 1727.5 : 1728.5} textAnchor="middle" fontSize={({ day: 9, week: 10.6, month: 10.5, year: 10.2 })[period]} fontWeight="600" fill={INK} fontFamily="Reem Kufi">{l}</text>
         ))}
         {period === 'day' && <rect x={43 + (maxPan ? (1 - (pan + maxPan) / (2 * maxPan)) * 232 : 0)} y="1653" width="70" height="4" rx="2" fill="#F5F7F7" stroke="#d6dde6" strokeWidth=".5" />}
 
@@ -178,14 +178,14 @@ export default function ProgressGraph({ period, offset, hidden, onFilter }: Prop
           {/* strips */}
           {!hidden.has('POS') && data.stripPos.map((m, i) => (
             <motion.g key={'sp' + i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduce ? 0 : i * 0.05 + 0.2 }}>
-              <Img n="pg-strip-tri-positive.svg" cx={fx(m.x) + 5.5} cy={1080} w={21.371} h={17.946} s={period === 'day' ? 1 : 0.7} />
-              {m.count !== null && <text x={fx(m.x) + 12} y={1083} fontSize="7" fontWeight="700" fill="#0B8FA3" fontFamily="Reem Kufi">{m.count}</text>}
+              <Img n="pg-strip-tri-positive.svg" cx={fx(m.x) + (period === 'day' ? 8 : period === 'month' ? 5.5 : 6.5)} cy={period === 'day' ? 1083 : period === 'week' ? 1084.4 : 1081.4} w={21.371} h={17.946} s={period === 'day' ? 1 : 0.81} />
+              {m.count !== null && <text x={fx(m.x) + (period === 'day' ? 14.5 : 15.5)} y={period === 'month' || period === 'year' ? 1083 : 1086} fontSize={period === 'day' ? 7 : 9} fontWeight="700" fill="#1B8F74" fontFamily="Reem Kufi">{m.count}</text>}
             </motion.g>
           ))}
           {!hidden.has('NEG') && data.stripNeg.map((m, i) => (
             <motion.g key={'sn' + i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduce ? 0 : i * 0.05 + 0.2 }}>
-              <Img n="pg-strip-tri-negative.svg" cx={fx(m.x) + 5.5} cy={1687} w={19.537} h={16.75} s={period === 'day' ? 1 : 0.7} />
-              {m.count !== null && <text x={fx(m.x) + 12} y={1690} fontSize="7" fontWeight="700" fill="#7b7b7b" fontFamily="Reem Kufi">{m.count}</text>}
+              <Img n="pg-strip-tri-negative.svg" cx={fx(m.x) + (period === 'day' ? 8 : 7)} cy={period === 'day' ? 1690 : 1691.4} w={19.537} h={16.75} s={period === 'day' ? 1 : 0.81} />
+              {m.count !== null && <text x={fx(m.x) + 14.5} y={1693} fontSize={period === 'day' ? 7 : 9} fontWeight="700" fill="#7b7b7b" fontFamily="Reem Kufi">{m.count}</text>}
             </motion.g>
           ))}
           {/* selected ring */}

@@ -109,7 +109,7 @@ export default function PoaGraph({ period, offset }: { period: Period; offset: n
                 <g style={{ pointerEvents: 'all', cursor: 'pointer' }} onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(i)} onPointerLeave={() => setHover(null)}
                   onClick={(e) => { e.stopPropagation(); setSel(sel === i && hover === null ? null : i) }}>
                   <circle cx={pt.x} cy={pt.y} r={Math.max(pt.size / 2 + 6, 22)} fill="transparent" />
-                  <Ball id="poa" cx={pt.x} cy={pt.y} d={isActive ? pt.size * 1.18 : pt.size} level={pt.level} label={pt.label} cyan={pt.cyan} active={isActive} />
+                  <Ball id="poa" cx={pt.x} cy={pt.y} d={isActive ? pt.size * 1.18 : pt.size} level={pt.level} label={pt.label ?? (pt.size < 12 ? pt.level : undefined)} cyan={pt.cyan} active={isActive} />
                 </g>
               </motion.g>
             )

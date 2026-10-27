@@ -41,7 +41,7 @@ const DATE_BOX: Record<Period, [number, number, number, number]> = { day: [177.9
 
 function Tabs({ period, onChange }: { period: Period; onChange: (p: Period) => void }) {
   return (
-    <div role="tablist" aria-label="Period" style={{ position: 'absolute', left: 18, top: 105, width: 392, height: 60 }}>
+    <div role="tablist" aria-label="Period" style={{ position: 'absolute', left: 18, top: 107.5, width: 392, height: 60 }}>
       {A('tabs-container.svg', -5, -5, 403, 71)}
       {PERIODS.map((p, i) => {
         const on = p === period
@@ -94,9 +94,10 @@ function CountText({ to, dec, box, fs }: { to: number; dec: number; box: [number
     const c = animate(0, to, { duration: 1.1, ease: 'easeOut', onUpdate: setV })
     return () => c.stop()
   }, [to, reduce])
-  const [x, y, w, h] = box
+  const [x0, y, w0, h] = box
+  const x = x0 - 0.9, w = w0 * 1.05
   return (
-    <svg style={{ position: 'absolute', left: x, top: y, overflow: 'visible', pointerEvents: 'none' }} width={w} height={h}>
+    <svg style={{ position: 'absolute', left: x, top: y - 0.4, overflow: 'visible', pointerEvents: 'none' }} width={w} height={h}>
       <text x="0" y={h} textLength={w} lengthAdjust="spacingAndGlyphs" fontSize={fs} fontWeight="600" fill={INK} fontFamily="Reem Kufi">{v.toFixed(dec)}</text>
     </svg>
   )
@@ -116,7 +117,7 @@ function Cards({ period, offset }: { period: Period; offset: number }) {
         {A('card-morning-plate-inner.svg', 0, 0, 174, 114)}
         {A('card-morning-heading-point-of-attraction.svg', 10.36, 15.86, 149.28, 9.48)}
         <CountText to={value} dec={t.dec} box={VAL_BOX[period]} fs={VAL_BOX[period][3] / 0.7} />
-        {A('card-morning-count-slash22.svg', 94.57 + (period === 'week' ? 3 : 0), 50.81, 21.46, 11.48)}
+        {A('card-morning-count-slash22.svg', 94.57 - (period === 'week' ? 0.3 : 0), 50.81, 21.46, 11.48)}
         {A(`card-morning-${period}-name.svg`, nm[period][0], 75.2, nm[period][1], 21.1)}
       </motion.div>
       <motion.div key={'cr' + period} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }} style={{ position: 'absolute', left: 227, top: 906, width: 170, height: 108 }}>
