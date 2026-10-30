@@ -1,0 +1,33 @@
+<svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="7" height="7" fill="#958888" style="fill:#958888;fill:color(display-p3 0.5837 0.5337 0.5337);fill-opacity:1;"/>
+<g id="ANGEL &#194;&#183; v11 &#226;&#128;&#148; Log a match &#226;&#134;&#146; Enjoy &#226;&#134;&#146; Day story (flow)">
+<path d="M-354.5 -6624.5C-354.5 -6625.6 -353.605 -6626.5 -352.5 -6626.5H3131.5C3132.6 -6626.5 3133.5 -6625.6 3133.5 -6624.5V1271.5C3133.5 1272.6 3132.6 1273.5 3131.5 1273.5H-352.5C-353.605 1273.5 -354.5 1272.6 -354.5 1271.5V-6624.5Z" fill="#444444" style="fill:#444444;fill:color(display-p3 0.2667 0.2667 0.2667);fill-opacity:1;"/>
+<path d="M-352.5 -6626.5V-6625.5H3131.5V-6626.5V-6627.5H-352.5V-6626.5ZM3133.5 -6624.5H3132.5V1271.5H3133.5H3134.5V-6624.5H3133.5ZM3131.5 1273.5V1272.5H-352.5V1273.5V1274.5H3131.5V1273.5ZM-354.5 1271.5H-353.5V-6624.5H-354.5H-355.5V1271.5H-354.5ZM-352.5 1273.5V1272.5C-353.052 1272.5 -353.5 1272.05 -353.5 1271.5H-354.5H-355.5C-355.5 1273.16 -354.157 1274.5 -352.5 1274.5V1273.5ZM3133.5 1271.5H3132.5C3132.5 1272.05 3132.05 1272.5 3131.5 1272.5V1273.5V1274.5C3133.16 1274.5 3134.5 1273.16 3134.5 1271.5H3133.5ZM3131.5 -6626.5V-6625.5C3132.05 -6625.5 3132.5 -6625.05 3132.5 -6624.5H3133.5H3134.5C3134.5 -6626.16 3133.16 -6627.5 3131.5 -6627.5V-6626.5ZM-352.5 -6626.5V-6627.5C-354.157 -6627.5 -355.5 -6626.16 -355.5 -6624.5H-354.5H-353.5C-353.5 -6625.05 -353.052 -6625.5 -352.5 -6625.5V-6626.5Z" fill="white" fill-opacity="0.1" style="fill:white;fill-opacity:0.1;"/>
+<g id="[v11] Sheet states &#226;&#128;&#148; what happened next">
+<rect x="-254.5" y="-426.5" width="2012" height="1440" rx="32" fill="url(#paint0_linear_249_2)"/>
+<g id="Sheet &#194;&#183; STATE 1 &#194;&#183; NOTHING YET" filter="url(#filter0_d_249_2)">
+<path d="M-194.5 -258.5C-194.5 -273.964 -181.964 -286.5 -166.5 -286.5H205.5C220.964 -286.5 233.5 -273.964 233.5 -258.5V15.5C233.5 30.964 220.964 43.5 205.5 43.5H-166.5C-181.964 43.5 -194.5 30.964 -194.5 15.5V-258.5Z" fill="url(#paint1_linear_249_2)"/>
+<circle id="Ellipse" cx="3.5" cy="3.5" r="3.5" fill="#C3D0EA" style="fill:#C3D0EA;fill:color(display-p3 0.7647 0.8157 0.9176);fill-opacity:1;"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_249_2" x="-210.5" y="-306.5" width="460" height="362" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="-4"/>
+<feGaussianBlur stdDeviation="8"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_249_2"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_249_2" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_249_2" x1="751.5" y1="-426.5" x2="751.5" y2="1013.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E9F8F3" style="stop-color:#E9F8F3;stop-color:color(display-p3 0.9137 0.9725 0.9529);stop-opacity:1;"/>
+<stop offset="1" stop-color="#EEF4FF" style="stop-color:#EEF4FF;stop-color:color(display-p3 0.9333 0.9569 1.0000);stop-opacity:1;"/>
+</linearGradient>
+<linearGradient id="paint1_linear_249_2" x1="19.5" y1="-286.5" x2="19.5" y2="43.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" style="stop-color:white;stop-opacity:1;"/>
+<stop offset="1" stop-color="#EAF2FF" style="stop-color:#EAF2FF;stop-color:color(display-p3 0.9176 0.9490 1.0000);stop-opacity:1;"/>
+</linearGradient>
+</defs>
+</svg>

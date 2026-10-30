@@ -1,0 +1,27 @@
+<svg width="428" height="926" viewBox="0 0 428 926" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ANGEL &#194;&#183; v11 &#226;&#128;&#148; Log a match &#226;&#134;&#146; Enjoy &#226;&#134;&#146; Day story (flow)">
+<path d="M-100 -298C-100 -299.105 -99.1046 -300 -98 -300H3386C3387.1 -300 3388 -299.105 3388 -298V7598C3388 7599.1 3387.1 7600 3386 7600H-98C-99.1046 7600 -100 7599.1 -100 7598V-298Z" fill="#444444" style="fill:#444444;fill:color(display-p3 0.2667 0.2667 0.2667);fill-opacity:1;"/>
+<path d="M-98 -300V-299H3386V-300V-301H-98V-300ZM3388 -298H3387V7598H3388H3389V-298H3388ZM3386 7600V7599H-98V7600V7601H3386V7600ZM-100 7598H-99V-298H-100H-101V7598H-100ZM-98 7600V7599C-98.5523 7599 -99 7598.55 -99 7598H-100H-101C-101 7599.66 -99.6568 7601 -98 7601V7600ZM3388 7598H3387C3387 7598.55 3386.55 7599 3386 7599V7600V7601C3387.66 7601 3389 7599.66 3389 7598H3388ZM3386 -300V-299C3386.55 -299 3387 -298.552 3387 -298H3388H3389C3389 -299.657 3387.66 -301 3386 -301V-300ZM-98 -300V-301C-99.6567 -301 -101 -299.657 -101 -298H-100H-99C-99 -298.552 -98.5524 -299 -98 -299V-300Z" fill="white" fill-opacity="0.1" style="fill:white;fill-opacity:0.1;"/>
+<g id="[v11] L1 &#194;&#183; Pick positive or negative" clip-path="url(#clip0_249_2)">
+<rect width="428" height="926" fill="#F0F5FF" style="fill:#F0F5FF;fill:color(display-p3 0.9412 0.9608 1.0000);fill-opacity:1;"/>
+<g id="bg &#194;&#183; glow (DS)">
+<rect width="428" height="926" fill="#F0F5FF" style="fill:#F0F5FF;fill:color(display-p3 0.9412 0.9608 1.0000);fill-opacity:1;"/>
+<g id="Group 34" opacity="0.25" filter="url(#filter0_f_249_2)">
+<ellipse id="Ellipse 66" cx="151.5" cy="426.501" rx="115.235" ry="121.048" fill="#FF8FC5" style="fill:#FF8FC5;fill:color(display-p3 1.0000 0.5618 0.7721);fill-opacity:1;"/>
+<ellipse id="Ellipse 69" cx="326.5" cy="687.501" rx="115.235" ry="121.048" fill="#EBFF6D" style="fill:#EBFF6D;fill:color(display-p3 0.9200 1.0000 0.4284);fill-opacity:1;"/>
+<ellipse id="Ellipse 67" cx="326.141" cy="443.501" rx="115.235" ry="121.048" fill="#48FFF4" style="fill:#48FFF4;fill:color(display-p3 0.2826 1.0000 0.9570);fill-opacity:1;"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_249_2" x="-96.7344" y="172.453" width="671.469" height="769.098" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="66.5" result="effect1_foregroundBlur_249_2"/>
+</filter>
+<clipPath id="clip0_249_2">
+<rect width="428" height="926" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
+</svg>
