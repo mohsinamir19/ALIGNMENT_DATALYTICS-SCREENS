@@ -84,11 +84,6 @@ function EmotionBackdrop() {
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', background: 'linear-gradient(180deg,#fbe4f2 0%,#e6f4f6 40%,#bfe4ff 100%)' }}>
       <img src={v11('m-bg-glow.svg')} alt="" draggable={false} style={{ position: 'absolute', left: 0, top: 0, width: 428, height: 926 }} />
       <img src={v11('m-spiral-e2-full.svg')} alt="" draggable={false} style={{ position: 'absolute', left: 0, top: 12, width: 428, height: 914 }} />
-      <div style={{ position: 'absolute', left: 0, top: 44, width: 428, textAlign: 'center', fontFamily: FONT, fontWeight: 700, color: '#34d2e3' }}>
-        <div style={{ fontSize: 31, lineHeight: '32px', letterSpacing: 1 }}>PLEASE CHOOSE</div>
-        <div style={{ fontSize: 17, lineHeight: '18px', color: '#0b8fa3' }}>THE EMOTION YOU ARE FEELING NOW</div>
-        <div style={{ font: `600 12px/16px ${FONT}`, color: '#3e4e78', marginTop: 1 }}>See how much the process made you feel better.</div>
-      </div>
     </div>
   )
 }
