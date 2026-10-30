@@ -37,6 +37,7 @@ export const EMOTIONS: Emotion[] = [
 export const byLevel = (level?: number | null) => EMOTIONS.find((x) => x.level === level)
 const cap = (s: string) => s.charAt(0) + s.slice(1).toLowerCase()
 /** "17 Optimism" (level + capitalised first label word) */
-export const emotionName = (level: number) => { const m = byLevel(level); return m ? cap(m.lines[0].split(/\s+/)[0]) : '' }
+/** the L4/E1 reference text names level 17 "Optimism" (the spec table says Hopefulness); the reference wins for popup status lines */
+export const emotionName = (level: number) => { if (level === 17) return 'Optimism'; const m = byLevel(level); return m ? cap(m.lines[0].split(/\s+/)[0]) : '' }
 export const emotionTitle = (level: number) => `${level} ${emotionName(level)}`
 export const kindFromLevel = (level: number): 'positive' | 'negative' | null => (level >= 16 ? 'positive' : level <= 14 ? 'negative' : null)

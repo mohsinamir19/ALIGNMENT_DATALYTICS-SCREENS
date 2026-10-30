@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import PhoneFrame from '../PhoneFrame'
 import { navigate, useQuery } from '../router'
 import { useDemo, type Movement } from '../store'
+import { PG_PLOT, type Bar } from '../../data/model'
 import Sheet from '../sheet/Sheet'
 import Shell from '../../components/Shell'
 import PoaGraph from '../../components/PoaGraph'
@@ -84,6 +85,9 @@ function EmotionBackdrop() {
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', background: 'linear-gradient(180deg,#fbe4f2 0%,#e6f4f6 40%,#bfe4ff 100%)' }}>
       <img src={v11('m-bg-glow.svg')} alt="" draggable={false} style={{ position: 'absolute', left: 0, top: 0, width: 428, height: 926 }} />
       <img src={v11('m-spiral-e2-full.svg')} alt="" draggable={false} style={{ position: 'absolute', left: 0, top: 12, width: 428, height: 914 }} />
+      {/* the E2 art bakes in "OPTIONAL · ADD IT TO YOUR DAY"; P1 says something else there, so patch that line with the sampled backdrop and set the P1 line */}
+      <div aria-hidden style={{ position: 'absolute', left: 36, top: 99, width: 356, height: 20, background: 'linear-gradient(90deg,#fff3f5,#fef3f3 28%,#fff6f3 52%,#fef6f2 76%,#fff9f2)' }} />
+      <p style={{ position: 'absolute', left: 0, top: 99, width: 428, height: 20, margin: 0, textAlign: 'center', font: `500 16px/20px ${FONT}`, color: '#3e4e78', whiteSpace: 'nowrap' }}>See how much the process made you feel better.</p>
     </div>
   )
 }
@@ -130,14 +134,12 @@ function ProcessPopup({ m, onDone, onSee }: { m: Movement; onDone: () => void; o
           <div style={{ ...lbl, right: 282.72 - 267.52, top: 94.24, fontSize: 8.36, lineHeight: '10px', textAlign: 'right' }}>After · {m.after}</div>
         </div>
         {/* texts */}
-        <div style={{ position: 'absolute', left: 48.37, top: 270.03, width: 289.25, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 11.8, textAlign: 'center' }}>
-          <div style={{ font: `700 22.874px/28.04px ${FONT}`, color: '#34d2e3', textTransform: 'uppercase' }}>{head}</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4.43, font: `600 11.806px/13.28px ${FONT}`, color: '#1b8f74' }}>
-            <span style={{ width: 5.9, height: 5.9, borderRadius: '50%', background: '#1b8f74', flex: 'none' }} />
-            in {m.minutes} minutes of {m.type}
-          </div>
-          <div style={{ font: `600 11.068px/14.76px ${FONT}`, color: '#3e4e78' }}>From {m.before} to {m.after}</div>
+        <div style={{ position: 'absolute', left: 48.37, top: 264, width: 289.25, textAlign: 'center', font: `700 22.874px/28.04px ${FONT}`, color: '#34d2e3', textTransform: 'uppercase' }}>{head}</div>
+        <div style={{ position: 'absolute', left: 48.37, top: 296.4, width: 289.25, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4.43, font: `600 11.806px/13.28px ${FONT}`, color: '#1b8f74' }}>
+          <span style={{ width: 5.9, height: 5.9, borderRadius: '50%', background: '#1b8f74', flex: 'none' }} />
+          in {m.minutes} minutes of {m.type}
         </div>
+        <div style={{ position: 'absolute', left: 48.37, top: 316.6, width: 289.25, textAlign: 'center', font: `600 11.068px/14.76px ${FONT}`, color: '#3e4e78' }}>From {m.before} to {m.after}</div>
         <button onClick={onDone} className="v11-p1btn" style={{ ...btnBase, left: 90 - 3.75 }} aria-label="Done">{plates('DONE')}</button>
         <button onClick={onSee} className="v11-p1btn" style={{ ...btnBase, left: 208.5 - 3.75 }} aria-label="See Datalytics">
           {plates(<>SEE<br />DATALYTICS</>)}
@@ -147,10 +149,34 @@ function ProcessPopup({ m, onDone, onSee }: { m: Movement; onDone: () => void; o
   )
 }
 
+/* ------------------------------------------------------------ sheet highlight over the progress graph */
+/** white .6 dim over the plot while the sheet is open (the sheet itself draws no scrim); the movement's bar is cut out of it and ringed */
+function SheetHighlight({ bar, dim, ring, checkIn }: { bar: Bar; dim: boolean; ring: boolean; checkIn: boolean }) {
+  const P = PG_PLOT, top = P.y + DY
+  const ringAt = (x: number, y: number) => (
+    <g>
+      <circle cx={x} cy={y} r={15} fill="rgba(255,255,255,.55)" stroke="#0b8fa3" strokeWidth={2} style={{ filter: 'drop-shadow(0 0 3px rgba(11,143,163,.5))' }} />
+    </g>
+  )
+  return (
+    <svg aria-hidden width={428} height={PAGE_H} style={{ position: 'absolute', left: 0, top: 0, pointerEvents: 'none' }}>
+      <defs>
+        <mask id="sh-dim-mask" maskUnits="userSpaceOnUse" x={0} y={0} width={428} height={PAGE_H}>
+          <rect x={P.x} y={top} width={P.w} height={P.h} fill="#fff" />
+          <rect x={bar.x1 - 5} y={bar.yTop + DY - 16} width={10} height={bar.yBottom - bar.yTop + 32} rx={5} fill="#000" />
+        </mask>
+      </defs>
+      {dim && <rect x={0} y={0} width={428} height={PAGE_H} fill="rgba(255,255,255,.6)" mask="url(#sh-dim-mask)" />}
+      {ring && !checkIn && <>{ringAt(bar.x1, bar.yTop + DY)}{ringAt(bar.x0, bar.yBottom + DY)}</>}
+      {ring && checkIn && ringAt(341, 1177 + DY)}
+    </svg>
+  )
+}
+
 /* ------------------------------------------------------------ page */
 export default function AnalyticsFlow() {
   const q = useQuery()
-  const { movement } = useDemo()
+  const { movement, events } = useDemo()
   const reduce = useReducedMotion()
   const [period, setPeriod] = useState<Period>('day')
   const [offset, setOffset] = useState(0)
@@ -203,6 +229,12 @@ export default function AnalyticsFlow() {
     if (hit >= 0) return hit
     return bars.reduce((best, b, i) => (b.vTop - b.vBottom > bars[best].vTop - bars[best].vBottom ? i : best), 0)
   }, [movement])
+  // the sheet needs the progress plate at y=60 (D2), which is further than the 1952 page can scroll: pad the bottom once the sheet has been opened
+  const [pad, setPad] = useState(false)
+  useEffect(() => { if (sheetOpen) setPad(true) }, [sheetOpen])
+  const bar = useMemo(() => pgFor('day', 0).bars[movementBar], [movementBar])
+  const showDim = sheetOpen && !(page === 2 && ext)    // page 3 bar tap shows the graph tooltip undimmed
+  const hasCheckIn = events.some((e) => e.type === 'check_in')
   const highlight = () => { setPeriod('day'); setOffset(0); setExt((e) => ({ i: movementBar, n: (e?.n ?? 0) + 1 })) }
 
   return (
@@ -213,7 +245,7 @@ export default function AnalyticsFlow() {
         ) : (
           <>
             <div ref={scroller} id="v11-scroll" style={{ position: 'absolute', inset: 0, overflowY: 'auto', overflowX: 'hidden', overscrollBehavior: 'contain', scrollbarWidth: 'none' }}>
-              <div style={{ position: 'relative', width: 428, height: PAGE_H, overflow: 'hidden', fontFamily: FONT }}>
+              <div style={{ position: 'relative', width: 428, height: PAGE_H + (pad ? 70 : 0), overflow: 'hidden', fontFamily: FONT }}>
                 <Shell dy={DY} period={period} offset={offset} hidden={hidden}
                   onPeriod={(p) => { setPeriod(p); setOffset(0) }}
                   onStep={(d) => setOffset((o) => Math.max(-12, Math.min(12, o + d)))}
@@ -221,6 +253,7 @@ export default function AnalyticsFlow() {
                 <Strip view={view} onOpen={openStrip} />
                 <PoaGraph dy={DY} period={period} offset={offset} onDrill={drill} />
                 <ProgressGraph dy={DY} defaultOpen={false} externalBar={ext} period={period} offset={offset} hidden={hidden} onSet={setKinds} onDrill={drill} />
+                {period === 'day' && offset === 0 && <SheetHighlight bar={bar} dim={showDim} ring={!sheetOpen || page === 0 || (page === 1 && hasCheckIn)} checkIn={sheetOpen && page === 1} />}
               </div>
             </div>
             <Sheet open={sheetOpen} page={page} onPage={(p) => setSheet(p)} onClose={() => setSheet(null)}
@@ -231,7 +264,7 @@ export default function AnalyticsFlow() {
       </PhoneFrame>
       {createPortal(
         <button onClick={() => navigate('/analytics?popup=process')}
-          style={{ position: 'fixed', right: 10, bottom: 8, fontSize: 12, padding: '6px 10px', minHeight: 32, color: '#3E4E78', background: 'rgba(255,255,255,.8)', borderRadius: 8, fontFamily: FONT, fontWeight: 600, zIndex: 9999 }}>
+          style={{ position: 'fixed', right: 10, bottom: 8, fontSize: 12, padding: '6px 10px', minHeight: 44, color: '#3E4E78', background: 'rgba(255,255,255,.8)', borderRadius: 8, fontFamily: FONT, fontWeight: 600, zIndex: 9999 }}>
           Simulate: process ended
         </button>,
         document.body,

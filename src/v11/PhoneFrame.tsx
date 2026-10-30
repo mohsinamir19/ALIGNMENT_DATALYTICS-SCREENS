@@ -26,7 +26,7 @@ export default function PhoneFrame({ children, bg = '#EAFFFD' }: { children: Rea
         </div>
       </div>
       <button onClick={() => { actions.reset(); window.location.reload() }} aria-label="Reset demo"
-        style={{ position: 'fixed', left: 10, bottom: 8, fontSize: 11, padding: '6px 8px', minHeight: 28, color: '#3E4E78', background: 'rgba(255,255,255,.7)', borderRadius: 8, fontFamily: 'Reem Kufi', fontWeight: 600, zIndex: 9999 }}>
+        style={{ position: 'fixed', left: 10, bottom: 8, fontSize: 11, padding: '6px 10px', minHeight: 44, color: '#3E4E78', background: 'rgba(255,255,255,.7)', borderRadius: 8, fontFamily: 'Reem Kufi', fontWeight: 600, zIndex: 9999 }}>
         Reset demo
       </button>
     </div>

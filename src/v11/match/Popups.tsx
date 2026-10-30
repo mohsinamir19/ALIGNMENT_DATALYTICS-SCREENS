@@ -37,7 +37,7 @@ export function PopupButton({ x, label, onClick, primary }: { x: number; label: 
     <button className="tap" onClick={onClick} aria-label={label.join(' ')} style={{ position: 'absolute', left: x - 6, top: 608, width: 100.5, height: 60, borderRadius: 6, zIndex: 2, pointerEvents: 'auto' }}>
       <span style={{ position: 'absolute', left: 6, top: 6, width: 88.5, height: 48.3, borderRadius: 3.2, background: g, boxShadow: o }}>
         <span style={{ position: 'absolute', inset: 1.6, borderRadius: 2.4, background: g, boxShadow: i }} />
-        <span style={{ position: 'absolute', inset: 3.2, borderRadius: 1.6, background: g, boxShadow: i, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 12.9, lineHeight: '16px', color: primary ? '#0f8a77' : '#178f7c', textAlign: 'center', textTransform: 'uppercase' }}>
+        <span style={{ position: 'absolute', inset: 3.2, borderRadius: 1.6, background: g, boxShadow: i, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: 5, fontWeight: 700, fontSize: 12.9, lineHeight: '16px', color: primary ? '#0f8a77' : '#178f7c', textAlign: 'center', textTransform: 'uppercase' }}>
           {label.map((l) => <span key={l}>{l}</span>)}
         </span>
       </span>

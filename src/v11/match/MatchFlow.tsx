@@ -95,7 +95,7 @@ function LScreen({ screen, draft, setDraft, go, onPickLevel, onBack, interactive
   const cfg = {
     l1: { sp: 372, head: 312, x: 0 }, l2: { sp: 402, head: 342, x: 0 }, l3: { sp: 312, head: 262, x: -1 }, behind: { sp: 352, head: 302, x: 0 },
   }[screen === 'l4' ? 'behind' : screen]
-  const expanded = screen === 'l2' || screen === 'behind' || screen === 'l4'
+  const expanded = screen === 'l2'
   const height = cfg.sp + 887
 
   useEffect(() => {
@@ -128,7 +128,7 @@ function LScreen({ screen, draft, setDraft, go, onPickLevel, onBack, interactive
             })
           )}
           <Heading2 top={cfg.head} />
-          <Spiral x={cfg.x} y={cfg.sp} dim={screen === 'l1' || screen === 'l2'} showBadge={screen === 'l3'} selected={interactive ? sel : null} onPick={onPickLevel} />
+          <Spiral x={cfg.x} y={cfg.sp} dim={screen === 'l1'} showBadge={screen === 'l3'} selected={interactive ? sel : null} onPick={onPickLevel} />
         </div>
       </div>
       <StatusBar />
@@ -206,7 +206,7 @@ function CheckIn() {
   const query = useQuery()
   const back = query.get('back') || '/analytics?sheet=2'
   const reduce = useReducedMotion()
-  const pick = (level: number) => { actions.addCheckIn(level); navigate(back) }
+  const pick = (level: number) => { actions.addCheckIn(level); navigate('/analytics?sheet=2') }
   const hold: CSSProperties = { position: 'absolute', left: 0, top: 0, width: 428, height: 926 }
   return (
     <div className="mf" style={hold}>

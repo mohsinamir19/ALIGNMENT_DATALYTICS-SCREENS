@@ -44,18 +44,18 @@ function Pill({ label, onClick, top, arrow, autoFocus }: { label: string; onClic
 
 function Icon({ kind, y }: { kind: Page2Row['icon']; y: number }) {
   if (kind === 'positive') return (
-    <div aria-hidden style={{ position: 'absolute', left: 30, top: y, width: 34, height: 29.15 }}>
+    <div aria-hidden style={{ position: 'absolute', left: 30, top: y + 3, width: 34, height: 29.15 }}>
       <img src="/v11/a-d3-icon-positive-match.svg" alt="" style={{ position: 'absolute', left: -6.37, top: -4.52, width: 44.88, height: 37.69, maxWidth: 'none' }} />
     </div>
   )
   if (kind === 'checkin') return (
-    <div aria-hidden style={{ position: 'absolute', left: 28, top: y - 4, width: 33.6, height: 33.6 }}>
+    <div aria-hidden style={{ position: 'absolute', left: 28, top: y - 3, width: 33.6, height: 33.6 }}>
       <img src="/v11/a-d4-icon-checkin-marker-c.svg" alt="" style={{ position: 'absolute', left: -9.52, top: -8.68, width: 52.64, height: 51.8, maxWidth: 'none' }} />
     </div>
   )
   // negative: grey triangle pointing down with a minus (the exported file carries a canvas background, so it is drawn here)
   return (
-    <svg aria-hidden width="42" height="38" viewBox="0 0 42 38" style={{ position: 'absolute', left: 26, top: y - 2 }}>
+    <svg aria-hidden width="42" height="38" viewBox="0 0 42 38" style={{ position: 'absolute', left: 26, top: y }}>
       <defs>
         <linearGradient id="negT" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#d9dde6" /><stop offset="1" stopColor="#8d94a3" /></linearGradient>
         <filter id="negS" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="1" dy="2" stdDeviation="1.6" floodColor="#000" floodOpacity=".25" /></filter>
@@ -98,9 +98,9 @@ function Page1({ onNext }: { onNext: () => void }) {
       </div>
       <span style={txt({ left: 58, top: 176, fontSize: 12, fontWeight: 600, color: SUB, lineHeight: '16px' })}>Before {'·'} {m.before}</span>
       <span style={txt({ right: 48, top: 176, fontSize: 12, fontWeight: 600, color: SUB, lineHeight: '16px' })}>After {'·'} {m.after}</span>
-      <p style={txt({ left: 0, right: 0, top: 206, textAlign: 'center', fontSize: 34, fontWeight: 700, color: GREEN, lineHeight: '40px' })}>+{m.after - m.before} levels</p>
+      <p style={txt({ left: 0, right: 0, top: 206, textAlign: 'center', fontSize: 34, fontWeight: 700, color: GREEN, lineHeight: '51px' })}>+{m.after - m.before} levels</p>
       <p style={txt({ left: 0, right: 0, top: 250, textAlign: 'center', fontSize: 14, fontWeight: 600, color: INK, lineHeight: '20px' })}>in {m.minutes} minutes of {m.type}</p>
-      <Pill label="See what happened next" top={278} arrow onClick={onNext} autoFocus />
+      <Pill label="See what happened next" top={281} arrow onClick={onNext} autoFocus />
     </>
   )
 }
@@ -110,14 +110,14 @@ function Page2({ expanded, setExpanded, onEnjoy, onClose }: { expanded: boolean;
   const { events, movement } = useDemo()
   const r = renderSheetPage2(events, movement)
   const { rows, showSeeAll, btnTop } = p2Layout(r, expanded)
-  const noteBg = r.note?.tone === 'green' ? 'rgba(27,143,116,.08)' : r.note?.tone === 'teal' ? 'rgba(11,143,163,.08)' : 'rgba(62,78,120,.07)'
+  const noteBg = 'rgba(27,143,116,.08)'
   const detail = r.state === 2 || r.state === 7 || r.state === 3 ? r.rows[0]?.detail : undefined
   return (
     <>
       <h2 style={eyebrow}>WHAT HAPPENED NEXT</h2>
       {r.heading && (
         <>
-          <p style={txt({ left: 28, top: 56, fontSize: 24, fontWeight: 700, color: INK, lineHeight: '30px' })}>{r.heading.title}</p>
+          <p style={txt({ left: 28, top: 56, fontSize: 24, fontWeight: 700, color: INK, lineHeight: '36px' })}>{r.heading.title}</p>
           <p style={txt({ left: 28, top: 92, fontSize: 14, fontWeight: 600, color: SUB, lineHeight: '20px' })}>{r.heading.sub}</p>
         </>
       )}
@@ -126,7 +126,7 @@ function Page2({ expanded, setExpanded, onEnjoy, onClose }: { expanded: boolean;
         return (
           <div key={row.id}>
             <Icon kind={row.icon} y={y} />
-            <p style={txt({ left: 96, top: y, fontSize: 24, fontWeight: 700, color: INK, lineHeight: '30px' })}>{row.title}</p>
+            <p style={txt({ left: 96, top: y, fontSize: 24, fontWeight: 700, color: INK, lineHeight: '36px' })}>{row.title}</p>
             <p style={txt({ left: 96, top: y + 36, fontSize: 14, fontWeight: 600, color: SUB, lineHeight: '20px' })}>{row.sub}</p>
           </div>
         )
@@ -226,7 +226,7 @@ export default function Sheet({ open, page, onPage, onClose, onEnjoy, onHighligh
     if (!open) return
     prevFocus.current = document.activeElement as HTMLElement | null
     setExpanded(false)
-    const t = window.setTimeout(() => (dlg.current?.querySelector<HTMLElement>('[data-autofocus]') ?? dlg.current)?.focus({ preventScroll: true }), 60)
+    const t = window.setTimeout(() => dlg.current?.focus({ preventScroll: true }), 60)
     return () => { window.clearTimeout(t); prevFocus.current?.focus?.({ preventScroll: true }) }
   }, [open])
   useEffect(() => {
