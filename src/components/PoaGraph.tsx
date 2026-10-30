@@ -46,7 +46,7 @@ function Axis({ period }: { period: Period }) {
   )
 }
 
-export default function PoaGraph({ period, offset, onDrill }: { period: Period; offset: number; onDrill: (p: Period, o: number) => void }) {
+export default function PoaGraph({ period, offset, onDrill, dy = 0 }: { period: Period; offset: number; onDrill: (p: Period, o: number) => void; dy?: number }) {
   const reduce = useReducedMotion()
   const data = useMemo(() => poaFor(period, offset), [period, offset])
   const [sel, setSel] = useState<number | null>(null)
@@ -77,7 +77,7 @@ export default function PoaGraph({ period, offset, onDrill }: { period: Period; 
   const maskId = `poa-mask-${period}`
 
   return (
-    <svg viewBox="0 0 428 1832" width="428" height="1832" style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', pointerEvents: 'none' }}>
+    <svg viewBox="0 0 428 1832" width="428" height="1832" style={{ position: 'absolute', left: 0, top: dy, overflow: 'visible', pointerEvents: 'none' }}>
       <BallDefs id="poa" />
       {/* glass rail container + plot */}
       {img('poa-container-frame.svg', 19, 221, 386, 631)}

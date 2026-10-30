@@ -36,9 +36,17 @@ export type Sel = { t: 'bar'; i: number; end: 'start' | 'end' } | { t: 'check' |
 const same = (a: Sel | null, b: Sel | null) => !!a && !!b && a.t === b.t && a.i === b.i && (a.t !== 'bar' || (b.t === 'bar' && a.end === b.end))
 const keyAct = (fn: () => void) => (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); fn() } }
 
-interface Props { period: Period; offset: number; hidden: Set<Kind>; onSet: (kinds: Kind[], on: boolean) => void; onDrill: (p: Period, o: number) => void }
+interface Props {
+  period: Period; offset: number; hidden: Set<Kind>; onSet: (kinds: Kind[], on: boolean) => void; onDrill: (p: Period, o: number) => void
+  /** v11: shift the whole graph down as ONE piece (+120 under the movement strip) */
+  dy?: number
+  /** v11: false = no default-open tooltip on load */
+  defaultOpen?: boolean
+  /** v11: external selection of a bar (its end marker + tooltip); a new `n` re-selects */
+  externalBar?: { i: number; n: number } | null
+}
 
-export default function ProgressGraph({ period, offset, hidden, onSet, onDrill }: Props) {
+export default function ProgressGraph({ period, offset, hidden, onSet, onDrill, dy = 0, defaultOpen = true, externalBar = null }: Props) {
   const reduce = useReducedMotion()
   const data = useMemo(() => pgFor(period, offset), [period, offset])
   const prev = useMemo(() => pgFor(period, offset - 1), [period, offset])
@@ -50,9 +58,11 @@ export default function ProgressGraph({ period, offset, hidden, onSet, onDrill }
   const drag = useRef<{ x: number; pan: number } | null>(null)
 
   useEffect(() => {
-    const d = offset === 0 ? PG_DEFAULT_SELECT[period] : null
+    const d = offset === 0 && defaultOpen ? PG_DEFAULT_SELECT[period] : null
     setSel(d === null ? null : { t: 'bar', i: d, end: 'end' }); setHover(null); setZoom(1); setPan(0); setDd(false)
   }, [period, offset])
+
+  useEffect(() => { if (externalBar) { setSel({ t: 'bar', i: externalBar.i, end: 'end' }); setHover(null) } }, [externalBar?.n]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // close on Esc and on a tap outside any element / tooltip / dropdown
   useEffect(() => {
@@ -128,7 +138,7 @@ export default function ProgressGraph({ period, offset, hidden, onSet, onDrill }
   )
 
   return (
-    <svg viewBox="0 0 428 1832" width="428" height="1832" style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', pointerEvents: 'none', touchAction: 'pan-y' }}>
+    <svg viewBox="0 0 428 1832" width="428" height="1832" style={{ position: 'absolute', left: 0, top: dy, overflow: 'visible', pointerEvents: 'none', touchAction: 'pan-y' }}>
       <BallDefs id="pg" />
       <defs>
         <clipPath id="pg-clip"><rect x="39" y="1040" width="314" height="720" /></clipPath>

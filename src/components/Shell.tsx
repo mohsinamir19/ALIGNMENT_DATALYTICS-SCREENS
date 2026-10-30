@@ -8,16 +8,20 @@ const A = (n: string, x: number, y: number, w: number, h: number, extra: React.C
   <img src={asset(n)} alt="" draggable={false} style={{ position: 'absolute', left: x, top: y, width: w, height: h, pointerEvents: 'none', userSelect: 'none', ...extra }} />
 )
 
-export function Background() {
+export function Background({ dy = 0 }: { dy?: number }) {
+  const blobs = (top: number) => (
+    <div style={{ position: 'absolute', left: 0, top, width: 381, height: 851.55, opacity: 0.16, filter: 'blur(66.5px)', pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', left: 0, top: 0, width: 212.76, height: 454.84, background: '#6A35FF', borderRadius: '50%' }} />
+      <div style={{ position: 'absolute', left: 0, top: 282.82, width: 234.64, height: 529.19, background: '#FF00E5', opacity: 0.8, borderRadius: '50%' }} />
+      <div style={{ position: 'absolute', left: 117.84, top: 23.73, width: 253.5, height: 491.28, background: '#15FF73', opacity: 0.8, borderRadius: '50%' }} />
+      <div style={{ position: 'absolute', left: 156.17, top: 345.5, width: 224.83, height: 450.46, background: '#FFE600', opacity: 0.8, borderRadius: '50%' }} />
+    </div>
+  )
   return (
     <>
       <div style={{ position: 'absolute', inset: 0, background: '#EAFFFD' }} />
-      <div style={{ position: 'absolute', left: 0, top: 105, width: 381, height: 851.55, opacity: 0.16, filter: 'blur(66.5px)' }}>
-        <div style={{ position: 'absolute', left: 0, top: 0, width: 212.76, height: 454.84, background: '#6A35FF', borderRadius: '50%' }} />
-        <div style={{ position: 'absolute', left: 0, top: 282.82, width: 234.64, height: 529.19, background: '#FF00E5', opacity: 0.8, borderRadius: '50%' }} />
-        <div style={{ position: 'absolute', left: 117.84, top: 23.73, width: 253.5, height: 491.28, background: '#15FF73', opacity: 0.8, borderRadius: '50%' }} />
-        <div style={{ position: 'absolute', left: 156.17, top: 345.5, width: 224.83, height: 450.46, background: '#FFE600', opacity: 0.8, borderRadius: '50%' }} />
-      </div>
+      {blobs(105)}
+      {dy > 0 && blobs(896.55)}
     </>
   )
 }
@@ -145,26 +149,28 @@ function Legend({ hidden, toggle }: { hidden: Set<Kind>; toggle: (k: Kind) => vo
   )
 }
 
-interface Props { period: Period; offset: number; hidden: Set<Kind>; onPeriod: (p: Period) => void; onStep: (d: number) => void; onToggle: (k: Kind) => void }
+interface Props { dy?: number; period: Period; offset: number; hidden: Set<Kind>; onPeriod: (p: Period) => void; onStep: (d: number) => void; onToggle: (k: Kind) => void }
 
-export default function Shell({ period, offset, hidden, onPeriod, onStep, onToggle }: Props) {
+export default function Shell({ dy = 0, period, offset, hidden, onPeriod, onStep, onToggle }: Props) {
   return (
     <>
-      <Background />
+      <Background dy={dy} />
       <StatusBar />
       <button aria-label="Back" onClick={() => history.length > 1 && history.back()} style={{ position: 'absolute', left: 10, top: 49, width: 44, height: 44 }}>
         {A('back-button-group-full.svg', -1, 0.85, 50, 47)}
       </button>
       {A('title-your-datalytics.svg', 101.46, 65.64, 225.47, 18.55)}
-      <button aria-label="Home" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ position: 'absolute', left: 362, top: 46, width: 44, height: 44 }}>
+      <button aria-label="Home" onClick={() => (document.getElementById('v11-scroll') ?? window).scrollTo({ top: 0, behavior: 'smooth' })} style={{ position: 'absolute', left: 362, top: 46, width: 44, height: 44 }}>
         {A('home-icon-group-full.svg', 2.48, 2, 40, 40)}
       </button>
       <Tabs period={period} onChange={onPeriod} />
       <DateStepper period={period} offset={offset} onStep={onStep} />
-      {A('heading-your-point-of-attraction.svg', 80.62, 214.23, 265.33, 14.31)}
-      {A('heading-your-progress.svg', 134.67, 873.61, 155.21, 13.54)}
-      <Cards period={period} offset={offset} />
-      <Legend hidden={hidden} toggle={onToggle} />
+      <div style={{ position: 'absolute', left: 0, top: dy, width: 428, height: 0 }}>
+        {A('heading-your-point-of-attraction.svg', 80.62, 214.23, 265.33, 14.31)}
+        {A('heading-your-progress.svg', 134.67, 873.61, 155.21, 13.54)}
+        <Cards period={period} offset={offset} />
+        <Legend hidden={hidden} toggle={onToggle} />
+      </div>
     </>
   )
 }
